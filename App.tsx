@@ -13,9 +13,9 @@ import MenuLection from "./app/lessoonLection/MenuLection";
 import Lection from "./app/lessoonLection/Lection";
 import FinalLection from "./app/lessoonLection/FinalLection";
 import MenuQuestion from "./app/lessoonLection/MenuQuestion";
-import Questions from "./app/lessoonLection/Questions";
 import HomeScreen from "./app/screens/HomeScreen";
 import UpdateProfile from "./app/screens/UpdateProfile";
+import Questions from "./app/lessoonLection/Questions";
 
 const Stack = createNativeStackNavigator();
 

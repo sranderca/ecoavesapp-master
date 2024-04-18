@@ -17,6 +17,7 @@ const AvesScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [showBackButton, setShowBackButton] = useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   let drawerRef = null;
 
   useEffect(() => {
@@ -40,9 +41,16 @@ const AvesScreen = ({ navigation }) => {
   }, []);
 
   const MenuLateral = () => (
-    <View style={{ flex: 1, backgroundColor: "#fff", padding: 20 }}>
-      <Text>Opciones del Menú</Text>
-      {/* Agrega aquí los elementos del menú */}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        padding: 20,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text>Filtrar por:</Text>
     </View>
   );
 

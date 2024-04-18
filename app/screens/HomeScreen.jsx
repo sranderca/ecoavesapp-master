@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TextInput,
-  Button,
-  Alert,
-  Image,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { View, Image, Text, StyleSheet } from "react-native";
 import Constants from "expo-constants";
 import { doc, getDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
@@ -57,9 +48,8 @@ const HomeScreen = () => {
         throw error;
       }
     };
-    fetchData(); 
+    fetchData();
   }, []);
-
 
   const currentBird = birds[currentBirdIndex];
 
@@ -76,7 +66,7 @@ const HomeScreen = () => {
             <Text style={styles.text}>{users.username}</Text>
             <Text style={styles.text}>Puntos: {users.score}</Text>
           </BlurView>
-        </>   
+        </>
       ) : (
         <Text>No hay datos del usuario</Text>
       )}

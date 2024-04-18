@@ -1,26 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
-import QuestionItem from "./QuestionItem";
+import Constants from "expo-constants";
+import { getAuth } from "firebase/auth";
 
 const Questions = ({ route }) => {
+  const [cuestionarios, setCuestionarios] = useState([]);
   const { lection } = route.params;
   const idLection = lection.id;
-  const [cuestionarios, setCuestionarios] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const { height, width } = Dimensions.get("window");
-  const [modalVisible, setModalVisible] = useState(false);
-  const listRef = useRef();
+  const [currentQuestionsIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isCorrect, setIsCorrect] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  console.log(score);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,216 +36,151 @@ const Questions = ({ route }) => {
     fetchData();
   }, []);
 
-  const OnSelectOption = (index, x) => {
-    const tempData = cuestionarios;
-    tempData.map((item, ind) => {
-      if (index == ind) {
-        if (item.marcada !== -1) {
-          item.marcada = -1;
-        } else {
-          item.marcada = x;
-        }
+  const handleNext = async () => {
+    if (currentQuestionsIndex === cuestionarios.length - 1) {
+      if (user !== null) {
+        const uid = user.uid;
+        const userDocRef = doc(FIREBASE_STORE, "users", uid);
+        await updateDoc(userDocRef, {
+          score: score,
+        });
       }
-    });
-    let temp = [];
-    tempData.map((item) => {
-      temp.push(item);
-    });
-    setCuestionarios(temp);
+      return;
+    } else {
+      setCurrentQuestionIndex(currentQuestionsIndex + 1);
+      setSelectedOption(null);
+      setIsCorrect(null);
+    }
   };
 
-  const getTextScore = () => {
-    let marks = 0;
-    cuestionarios.map((item) => {
-      if (item.marcada !== -1) {
-        marks = marks + 5;
-      }
-    });
-    return marks;
+  const handleOptionPress = (pressedOption) => {
+    if (selectedOption !== null) {
+      return;
+    }
+    setSelectedOption(pressedOption);
+
+    const isAnswerCorrect =
+      cuestionarios[currentQuestionsIndex].respuesta === pressedOption;
+    setIsCorrect(isAnswerCorrect);
+
+    if (isAnswerCorrect) {
+      setScore((prevScore) => prevScore + 10);
+    }
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Image
-        source={require("../../assets/screenGeneral.png")}
-        style={StyleSheet.absoluteFill}
-      />
-      <View style={{ marginTop: 30 }}>
-        <Text style={styles.title}>Pregunta {currentIndex}</Text>
-        <FlatList
-          ref={listRef}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          horizontal
-          onScroll={(e) => {
-            const x = e.nativeEvent.contentOffset.x / width + 1;
-            setCurrentIndex(x.toFixed(0));
-          }}
-          data={cuestionarios}
-          renderItem={({ item, index }) => {
-            return (
-              <QuestionItem
-                data={item}
-                selectedOption={(x) => {
-                  OnSelectOption(index, x);
-                }}
-              />
-            );
-          }}
-        />
-      </View>
-      <View style={styles.containerBotons}>
-        <TouchableOpacity
-          style={styles.BotonLeft}
-          onPress={() => {
-            if (currentIndex > 1) {
-              listRef.current.scrollToIndex({
-                animated: true,
-                index: currentIndex - 2,
-              });
-            }
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>Anterior</Text>
-        </TouchableOpacity>
-        {currentIndex == 3 ? (
-          <TouchableOpacity
-            style={styles.BotonRightSend}
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          >
-            <Text style={{ fontWeight: "600" }}>Enviar</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={styles.BotonRight}
-            onPress={() => {
-              if (cuestionarios[currentIndex - 1].marcada !== -1) {
-                if (currentIndex < cuestionarios.length) {
-                  listRef.current.scrollToIndex({
-                    animated: true,
-                    index: currentIndex,
-                  });
-                }
-              }
-            }}
-          >
-            <Text style={{ fontWeight: "600" }}>Siguiente</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
+    <View style={styles.container}>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "600",
+          textAlign: "center",
+          marginBottom: 10,
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0,0,0,.5)",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#fff",
-              width: "90%",
-
-              borderRadius: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "800",
-                alignSelf: "center",
-                marginTop: 20,
-              }}
-            >
-              Text Score
+        Pregunta: {currentQuestionsIndex + 1}
+      </Text>
+      {cuestionarios.length > 0 ? (
+        <>
+          <View style={styles.containerQues}>
+            <Text style={styles.textQues}>
+              {cuestionarios[currentQuestionsIndex].pregunta}
             </Text>
-            <Text
-              style={{
-                fontSize: 40,
-                fontWeight: "800",
-                alignSelf: "center",
-                marginTop: 20,
-                color: "green",
-              }}
-            >
-              {getTextScore()}
-            </Text>
-            <TouchableOpacity
-              style={{
-                alignSelf: "center",
-                height: 40,
-                padding: 10,
-                borderWidth: 1,
-                borderRadius: 10,
-                marginTop: 20,
-                marginBottom: 20,
-              }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text>Close</Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
+          <Text style={{ fontSize: 16, fontWeight: "600" }}>
+            Seleccione una respuesta
+          </Text>
+          {cuestionarios[currentQuestionsIndex].opciones.map((opcion) => (
+            <View>
+              <Pressable
+                onPress={() => handleOptionPress(opcion)}
+                style={[
+                  {
+                    marginTop: 20,
+                    backgroundColor: "white",
+                    padding: 10,
+                  },
+                  selectedOption === opcion && isCorrect
+                    ? {
+                        borderColor: "green",
+                        borderWidth: 2,
+                        backgroundColor: "#0EED36",
+                      }
+                    : selectedOption === opcion && !isCorrect
+                    ? {
+                        borderColor: "red",
+                        borderWidth: 2,
+                        backgroundColor: "rgba(255, 0, 0, 0.5)",
+                      }
+                    : null,
+                ]}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "500",
+                    textAlign: "center",
+                  }}
+                >
+                  {opcion}
+                </Text>
+              </Pressable>
+            </View>
+          ))}
+          <Pressable style={styles.Boton} onPress={handleNext}>
+            <Text style={{ fontSize: 16, fontWeight: "500", color: "white" }}>
+              {currentQuestionsIndex === cuestionarios.length - 1
+                ? "Finish"
+                : "Next"}
+            </Text>
+          </Pressable>
+        </>
+      ) : (
+        <Text>Cargando cuestionarios...</Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
+  container: {
+    flex: 1,
+    padding: 20,
+    marginTop: Constants.statusBarHeight,
+    backgroundColor: "#D0FFE8",
+  },
+  containerQues: {
+    backgroundColor: "white",
+    padding: 10,
+    marginBottom: 20,
+  },
+  textQues: {
+    fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
+  },
+  optionRes: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "white",
     justifyContent: "center",
-    alignSelf: "center",
-  },
-  containerBotons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    position: "absolute",
-    bottom: 20,
-    width: "100%",
   },
-  BotonLeft: {
-    backgroundColor: "#66FFA6",
+  textOptions: {
+    color: "white",
+    textAlign: "center",
+    paddingRight: 33,
+    paddingLeft: 5,
+  },
+  Boton: {
+    backgroundColor: "#1485F5",
     height: 50,
-    width: 100,
+    width: 350,
     borderRadius: 10,
-    marginLeft: 20,
     justifyContent: "center",
     alignItems: "center",
-  },
-  BotonRight: {
-    backgroundColor: "#66FFA6",
-    height: 50,
-    width: 100,
-    borderRadius: 10,
-    marginLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 20,
-  },
-  BotonRightSend: {
-    backgroundColor: "#265921",
-    height: 50,
-    width: 100,
-    borderRadius: 10,
-    marginLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 20,
+    marginTop: 20,
   },
 });
 
