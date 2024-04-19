@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
 import Constants from "expo-constants";
-import { getAuth } from "firebase/auth";
+import * as Progress from "react-native-progress";
 
-const Questions = ({ route }) => {
+const Questions = ({ route, navigation }) => {
   const [cuestionarios, setCuestionarios] = useState([]);
   const { lection } = route.params;
   const idLection = lection.id;
@@ -13,10 +13,8 @@ const Questions = ({ route }) => {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
-  const auth = getAuth();
-  const user = auth.currentUser;
-
-  console.log(score);
+  const [quizProgress, setQuizProgress] = useState(cuestionarios.length);
+  const progress = (currentQuestionsIndex + 1) / quizProgress;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +27,7 @@ const Questions = ({ route }) => {
           data.push({ id: doc.id, ...doc.data() });
         });
         setCuestionarios(data);
+        setQuizProgress(data.length);
       } catch (error) {
         console.error("Error al obtener los cuestionarios:", error);
       }
@@ -36,16 +35,9 @@ const Questions = ({ route }) => {
     fetchData();
   }, []);
 
-  const handleNext = async () => {
+  const handleNext = () => {
     if (currentQuestionsIndex === cuestionarios.length - 1) {
-      if (user !== null) {
-        const uid = user.uid;
-        const userDocRef = doc(FIREBASE_STORE, "users", uid);
-        await updateDoc(userDocRef, {
-          score: score,
-        });
-      }
-      return;
+      navigation.navigate("Score", { score: score });
     } else {
       setCurrentQuestionIndex(currentQuestionsIndex + 1);
       setSelectedOption(null);
@@ -70,6 +62,7 @@ const Questions = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <Progress.Bar progress={progress} width={null} height={20}></Progress.Bar>
       <Text
         style={{
           fontSize: 20,

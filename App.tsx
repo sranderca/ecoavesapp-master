@@ -16,6 +16,7 @@ import MenuQuestion from "./app/lessoonLection/MenuQuestion";
 import HomeScreen from "./app/screens/HomeScreen";
 import UpdateProfile from "./app/screens/UpdateProfile";
 import Questions from "./app/lessoonLection/Questions";
+import Score from "./app/lessoonLection/Score";
 
 const Stack = createNativeStackNavigator();
 
@@ -126,6 +127,11 @@ export default function App() {
         <Stack.Screen
           name="UpdateProfile"
           component={UpdateProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Score"
+          component={Score}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
