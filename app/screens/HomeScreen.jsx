@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, Image, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Image, Text, StyleSheet, TouchableOpacity} from "react-native";
 import Constants from "expo-constants";
 import { doc, getDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { BlurView } from "expo-blur";
 import birds from "../data/birds";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const [currentBirdIndex, setCurrentBirdIndex] = useState(0);
@@ -30,26 +31,27 @@ const HomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const docRef = doc(FIREBASE_STORE, "users", uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setUsers(userData);
-          console.log(users);
-        } else {
-          console.log("No such document!");
-          return null;
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const docRef = doc(FIREBASE_STORE, "users", uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUsers(userData);
+          } else {
+            console.log("No such document!");
+            return null;
+          }
+        } catch (error) {
+          console.error("Error al obtener el usuario:", error);
+          throw error;
         }
-      } catch (error) {
-        console.error("Error al obtener el usuario:", error);
-        throw error;
-      }
-    };
-    fetchData();
-  }, []);
+      };
+      fetchData();
+    }, [])
+  );
 
   const currentBird = birds[currentBirdIndex];
 
@@ -87,6 +89,12 @@ const HomeScreen = () => {
           </View>
         </View>
       </BlurView>
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+        <Image
+          source={require("../../assets/logout.png")}
+          style={{ width: 50, height: 50 }}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -138,6 +146,11 @@ const styles = StyleSheet.create({
   },
   description: {
     lineHeight: 20,
+  },
+  logoutButton: {
+    position: "absolute",
+    top: Constants.statusBarHeight + 10,
+    right: 40,
   },
 });
 

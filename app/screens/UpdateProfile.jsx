@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 const UpdateProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [username, setUsername] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState("https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird1.png?alt=media&token=5f11fb35-da49-44df-9d14-80fc557e9ffc");
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -68,7 +68,6 @@ const UpdateProfile = () => {
           username: username,
           avatar: selectedAvatar,
           score: 0,
-          profileComplete: true,
         };
 
         await setDoc(documentRef, data);
@@ -99,9 +98,7 @@ const UpdateProfile = () => {
           >
             <Image
               source={
-                { uri: selectedAvatar } || {
-                  uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird1.png?alt=media&token=5f11fb35-da49-44df-9d14-80fc557e9ffc",
-                }
+                { uri: selectedAvatar } 
               }
               style={styles.avatar}
             />
