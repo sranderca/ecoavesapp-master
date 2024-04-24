@@ -1,10 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Constants from "expo-constants";
 import { BlurView } from "expo-blur";
+import { Dimensions } from "react-native";
 
-const DetalleAve = ({ route }) => {
+const DetalleAve = ({ route, navigation }) => {
   const { ave } = route.params;
+  const { width } = Dimensions.get("window");
+
+  const handleBack = () => {
+    navigation.navigate("Tab");
+  };
 
   return (
     <View style={styles.container}>
@@ -12,26 +18,41 @@ const DetalleAve = ({ route }) => {
         source={require("../../assets/screenGeneral.png")}
         style={[StyleSheet.absoluteFill]}
       />
-      <Text style={styles.nombreTitulo}>{ave.nombre}</Text>
-      <Text style={styles.nombreSub}>{ave.nom_cientifico}</Text>
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          width: "100%",
-          height: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+      <TouchableOpacity
+        style={{ left: 15, marginTop: 10 }}
+        onPress={() => handleBack()}
       >
-        <BlurView intensity={30}>
-          <View style={styles.birdCard}>
-            <Image source={{ uri: ave.imagen }} style={styles.birdImage} />
-            <View style={styles.birdInfo}>
-              <Text style={styles.description}>{ave.descripcion}</Text>
-            </View>
+        <Image
+          source={require("../../assets/back.png")}
+          style={{ width: 35, height: 35 }}
+        />
+      </TouchableOpacity>
+      <View style={styles.head}>
+        <Text style={styles.nombreTitulo}>{ave.nombre}</Text>
+        <Text style={styles.nombreSub}>{ave.nom_cientifico}</Text>
+        <View
+          style={{
+            width: width,
+            height: 30,
+            backgroundColor: "#D9D9D9",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: "600" }}>
+            INFORMACION DE LA ESPECIE
+          </Text>
+        </View>
+      </View>
+      <BlurView intensity={30} style={{ alignItems: "center" }}>
+        <View style={styles.birdCard}>
+          <Image source={{ uri: ave.imagen }} style={styles.birdImage} />
+          <View style={styles.birdInfo}>
+            <Text style={{ marginBottom: 20 }}>{ave.prob_dever}</Text>
+            <Text style={styles.description}>{ave.descripcion}</Text>
           </View>
-        </BlurView>
-      </ScrollView>
+        </View>
+      </BlurView>
     </View>
   );
 };
@@ -39,20 +60,14 @@ const DetalleAve = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: Constants.statusBarHeight,
     flexGrow: 1,
   },
+  head: {
+    alignItems: "center",
+    marginTop: -30,
+  },
   birdCard: {
-    backgroundColor: "rgba(255, 255, 255, 0)",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    overflow: "hidden",
     width: 300,
     maxWidth: "100%",
     textAlign: "center",
@@ -68,6 +83,9 @@ const styles = StyleSheet.create({
   },
   description: {
     lineHeight: 20,
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "justify",
   },
   nombreTitulo: {
     fontSize: 24,

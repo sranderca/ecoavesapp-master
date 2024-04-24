@@ -4,8 +4,10 @@ import { collection, getDocs } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
 import Constants from "expo-constants";
 import * as Progress from "react-native-progress";
+import { Dimensions } from "react-native";
 
 const Questions = ({ route, navigation }) => {
+  const { width } = Dimensions.get("window");
   const [cuestionarios, setCuestionarios] = useState([]);
   const { lection } = route.params;
   const idLection = lection.id;
@@ -120,11 +122,22 @@ const Questions = ({ route, navigation }) => {
               </Pressable>
             </View>
           ))}
-          <Pressable style={styles.Boton} onPress={handleNext}>
+          <Pressable
+            style={{
+              backgroundColor: "#1485F5",
+              height: 50,
+              width: width * 0.9,
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+            }}
+            onPress={handleNext}
+          >
             <Text style={{ fontSize: 16, fontWeight: "500", color: "white" }}>
               {currentQuestionsIndex === cuestionarios.length - 1
-                ? "Finish"
-                : "Next"}
+                ? "Finalizar"
+                : "Siguiente"}
             </Text>
           </Pressable>
         </>

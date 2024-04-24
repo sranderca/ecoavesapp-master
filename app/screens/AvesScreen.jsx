@@ -17,7 +17,6 @@ const AvesScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [showBackButton, setShowBackButton] = useState(false);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   let drawerRef = null;
 
   useEffect(() => {

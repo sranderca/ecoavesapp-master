@@ -1,9 +1,12 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import Constants from "expo-constants";
+import { Dimensions } from "react-native";
 
 const FinalLection = ({ route, navigation }) => {
   const { lection } = route.params;
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
 
   const handlePress = () => {
     navigation.navigate("MenuQuestion", { lection });
@@ -15,7 +18,7 @@ const FinalLection = ({ route, navigation }) => {
         source={require("../../assets/FinalLection.png")}
         resizeMode="cover"
         style={{
-          height: 300,
+          height: height * 0.35,
           width: "100%",
           marginTop: Constants.statusBarHeight,
         }}
@@ -25,14 +28,22 @@ const FinalLection = ({ route, navigation }) => {
           source={{ uri: lection.icon }}
           resizeMode="contain"
           style={{
-            marginTop: 120,
+            marginTop: height * 0.15,
             height: 120,
             width: 120,
           }}
         />
       </View>
 
-      <View style={styles.containerInfo}>
+      <View
+        style={{
+          backgroundColor: "white",
+          height: height * 0.56,
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 30,
+        }}
+      >
         <Text style={styles.title}>¡Felicitaciones!</Text>
         <Text style={styles.subtitle}>Has completado {lection.title}</Text>
         <Text style={styles.textInfo}>
@@ -55,9 +66,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   icon: {
-    alignItems: "center",
+    alignSelf: "center",
     position: "absolute", // Para que el icono se pueda superponer
-    left: 140,
     zIndex: 1, // Asegura que el icono esté sobre la imagen
     width: 100,
     height: 100,
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
