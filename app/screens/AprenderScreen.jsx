@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import obtenerLecciones from "../data/obtenerLecciones";
 import Constants from "expo-constants";
+import { Dimensions } from "react-native";
 
 const Aprender = ({ navigation }) => {
   const [lection, setLection] = useState([]);
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +39,16 @@ const Aprender = ({ navigation }) => {
     };
 
     return (
-      <TouchableOpacity style={styles.leccion} onPress={() => handlePress()}>
+      <TouchableOpacity
+        style={{
+          width: width * 0.84,
+          height: height * 0.16,
+          marginBottom: 20,
+          alignContent: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => handlePress()}
+      >
         <Text style={styles.textoLeccion}>{lection.title}</Text>
         <View style={styles.imageContainer}>
           <Image
@@ -46,6 +58,10 @@ const Aprender = ({ navigation }) => {
         </View>
       </TouchableOpacity>
     );
+  };
+
+  const handlePressHabitats = () => {
+    navigation.navigate("MenuHabitats");
   };
 
   return (
@@ -62,13 +78,45 @@ const Aprender = ({ navigation }) => {
 
       <View style={styles.containerText}>
         <Text style={styles.texto}>
-          En la siguiente sección, se presentan distintos casos donde tendrás
-          que analizar qué actitudes tomarías en pro de las aves de la laguna y
-          su hábitat. Al final, te puedes orientar sobre las mejores decisiones
-          respondiendo unas breves preguntas.
+          Bienvenido a la sección de aprendizaje. Aquí encontrarás diversos
+          casos en los que tendrás que analizar las acciones que podrías tomar
+          para proteger a las aves de la laguna y su entorno. Al final de cada
+          caso, podrás evaluar tus decisiones respondiendo algunas preguntas
+          breves que te ayudarán a orientarte hacia las mejores prácticas de
+          conservación. ¡Aprende y actúa en pro del bienestar de nuestras aves!
         </Text>
-        <Text style={styles.tituloLecciones}>Todas las lecciones</Text>
       </View>
+      <TouchableOpacity
+        style={{
+          width: width * 0.84,
+          height: height * 0.16,
+          marginBottom: 20,
+          alignContent: "center",
+          justifyContent: "center",
+          marginTop: 40,
+        }}
+        onPress={() => handlePressHabitats()}
+      >
+        <Text
+          style={{
+            marginTop: 85,
+            marginLeft: 13,
+            color: "white",
+            fontWeight: "bold",
+            fontSize: 16,
+            zIndex: 2,
+          }}
+        >
+          EcoHábitats: Clasificación de Hogares Aviarios
+        </Text>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../../assets/ecohabitats.jpg")}
+            style={styles.imagenLecciones}
+          />
+        </View>
+      </TouchableOpacity>
+      <Text style={styles.tituloLecciones}>Todas las lecciones</Text>
       <FlatList
         data={lection}
         renderItem={({ item }) => <LectionCard lection={item} />}
@@ -89,7 +137,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "center",
-    padding: 40,
+    paddingHorizontal: 40,
+    marginTop: 10,
   },
   title: {
     fontSize: 24,
@@ -103,21 +152,20 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   containerText: {
-    marginBottom: -5,
+    marginBottom: -20,
+    marginTop: 10,
   },
   texto: {
     fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginLeft: 30,
-    marginRight: 30,
+    fontWeight: "400",
+    textAlign: "justify",
+    paddingHorizontal: 30,
   },
   tituloLecciones: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
     textAlign: "center",
-    padding: 10,
   },
   leccion: {
     width: 330,

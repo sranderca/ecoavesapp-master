@@ -85,14 +85,16 @@ const styles = StyleSheet.create({
     marginTop: -200,
   },
   subtitle: {
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
     marginTop: 20,
+    textAlign: 'center'
   },
   textInfo: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center",
     marginTop: 20,
+    fontWeight: "400"
   },
   containerButton: {
     flex: 1,
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 });
 

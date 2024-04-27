@@ -3,24 +3,18 @@ import React from "react";
 import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 
-const MenuLection = ({ route, navigation }) => {
+const MenuHabitats = ({ navigation }) => {
   const { height } = Dimensions.get("window");
-  const { lection } = route.params;
 
   const handlePress = () => {
-    navigation.navigate("Lection", { lection });
+    navigation.navigate("Habitats");
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/screenGeneral.png")}
-        style={[StyleSheet.absoluteFill]}
-      />
-
       <View style={styles.containerImage}>
         <Image
-          source={{ uri: lection.image }}
+          source={require("../../assets/habitat.jpg")}
           resizeMode="cover"
           style={{
             height: height * 0.3,
@@ -32,12 +26,13 @@ const MenuLection = ({ route, navigation }) => {
 
       <View style={styles.icon}>
         <Image
-          source={{ uri: lection.icon }}
+          source={require("../../assets/iconbird.png")}
           resizeMode="contain"
           style={{
             marginTop: height * 0.25,
             height: 120,
             width: 120,
+            borderRadius: 14,
           }}
         />
       </View>
@@ -51,21 +46,30 @@ const MenuLection = ({ route, navigation }) => {
           padding: 30,
         }}
       >
-        <Text style={styles.title}>{lection.title}</Text>
-        <Text style={styles.description}>{lection.description}</Text>
+        <Text style={styles.title}>
+          EcoHábitats: Clasificación de Hogares Aviarios
+        </Text>
+        <Text style={styles.description}>
+          ¡Bienvenido a EcoHabitats, un desafiante juego de memoria y
+          emparejamiento! Tu objetivo será emparejar las diferentes especies de
+          aves con su respectivo habitat o lugar que frecuentan en la Laguna,
+          desde arbustos, arboles, cultivos o en el mismo humedal. Buena suerte!
+        </Text>
         <View style={styles.containerIcon}>
           <Image
-            source={require("../../assets/book1.png")}
+            source={require("../../assets/puzzle.png")}
             style={styles.iconInfo}
           />
         </View>
         <View style={styles.lecciones}>
-          <Text style={styles.text}>Lecciones</Text>
+          <Text style={styles.text}>Juego</Text>
         </View>
       </View>
       <View styles={styles.containerButton}>
         <TouchableOpacity style={styles.button} onPress={() => handlePress()}>
-          <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 16 }}>
+          <Text
+            style={{ textAlign: "center", fontWeight: "600", fontSize: 16 }}
+          >
             Empezar
           </Text>
         </TouchableOpacity>
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight,
     flexGrow: 1,
+    backgroundColor: "#D0FFE8",
   },
   containerImage: {
     padding: 10,
@@ -88,23 +93,18 @@ const styles = StyleSheet.create({
     position: "absolute", // Para que el icono se pueda superponer
     zIndex: 1, // Asegura que el icono esté sobre la imagen
   },
-  containerInfo: {
-    backgroundColor: "#D3D3D3",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 500,
-    padding: 30,
-  },
   title: {
     fontSize: 22,
-    fontWeight: "600",
-    marginBottom: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 20,
   },
   description: {
     textAlign: "center",
     fontWeight: "500",
     marginBottom: 30,
-    fontSize: 16
+    fontSize: 16,
+    marginTop: 20,
   },
   text: {
     textAlign: "center",
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuLection;
+export default MenuHabitats;

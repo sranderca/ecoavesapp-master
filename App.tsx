@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useState, useEffect } from "react";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { User, onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "./firebaseConfig";
 import Login from "./app/screens/Login";
@@ -17,6 +18,9 @@ import HomeScreen from "./app/screens/HomeScreen";
 import UpdateProfile from "./app/screens/UpdateProfile";
 import Questions from "./app/lessoonLection/Questions";
 import Score from "./app/lessoonLection/Score";
+import MenuHabitats from "./app/lessoonLection/MenuHabitats";
+import Habitats from "./app/lessoonLection/Habitats";
+import 'react-native-gesture-handler'
 
 const Stack = createNativeStackNavigator();
 
@@ -132,6 +136,16 @@ export default function App() {
         <Stack.Screen
           name="Score"
           component={Score}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MenuHabitats"
+          component={MenuHabitats}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Habitats"
+          component={Habitats}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

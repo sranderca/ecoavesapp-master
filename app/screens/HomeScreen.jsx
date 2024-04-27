@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Image, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  DrawerLayoutAndroid,
+} from "react-native";
 import Constants from "expo-constants";
 import { doc, getDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
@@ -7,18 +14,24 @@ import { getAuth, signOut } from "firebase/auth";
 import { BlurView } from "expo-blur";
 import birds from "../data/birds";
 import { useFocusEffect } from "@react-navigation/native";
+import { Dimensions } from "react-native";
 
 const HomeScreen = () => {
   const [currentBirdIndex, setCurrentBirdIndex] = useState(0);
   const auth = getAuth();
   const [users, setUsers] = useState([]);
   const user = auth.currentUser;
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
   let uid = null;
+  let drawerRef = null;
+  let email = "";
 
   if (user !== null) {
     uid = user.uid;
+    email = user.email;
   } else {
-    console.error("Error al obtener el uid");
+    console.error("Error al obtener el uid y el email");
   }
 
   const handleLogout = async () => {
@@ -55,41 +68,39 @@ const HomeScreen = () => {
 
   const currentBird = birds[currentBirdIndex];
 
-  return (
-    <View style={styles.container}>
-      <Image
-        source={require("../../assets/screenGeneral.png")}
-        style={[styles.image, StyleSheet.absoluteFill]}
-      />
-      {users ? (
-        <>
-          <BlurView intensity={90} style={{ alignItems: "center" }}>
-            <Image source={{ uri: users.avatar }} style={styles.avatar} />
-            <Text style={styles.text}>{users.username}</Text>
-            <Text style={styles.text}>Puntos: {users.score}</Text>
-          </BlurView>
-        </>
-      ) : (
-        <Text>No hay datos del usuario</Text>
-      )}
-      <View style={styles.containerText}>
-        <Text style={styles.textTitle}>
-          Especies de aves amenazadas en DRMI Laguna de Sonso
-        </Text>
-      </View>
-      <BlurView intensity={80}>
-        <View style={styles.birdCard}>
-          <Image source={{ uri: currentBird.image }} style={styles.birdImage} />
-          <View style={styles.birdInfo}>
-            <Text style={styles.birdName}>{currentBird.nombreComun}</Text>
-            <Text style={styles.scientificName}>
-              {currentBird.nombreCientifico}
-            </Text>
-            <Text style={styles.description}>{currentBird.description}</Text>
-          </View>
-        </View>
-      </BlurView>
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+  const abrirMenuLateral = () => {
+    drawerRef.openDrawer();
+  };
+
+  const MenuLateral = () => (
+    <View
+      style={{
+        flex: 1,
+        padding: 20,
+        alignItems: "center",
+      }}
+    >
+      <Image source={{ uri: users.avatar }} style={styles.avatar} />
+      <Text style={styles.text}>{email}</Text>
+      <Text style={styles.text}>
+        Username{"\n"}
+        {users.username}
+      </Text>
+      <Text style={styles.text}>
+        Puntos{"\n"}
+        {users.score}
+      </Text>
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: "500",
+          textAlign: "center",
+          marginTop: 20,
+        }}
+      >
+        Cerrar sesion
+      </Text>
+      <TouchableOpacity onPress={handleLogout} style={{ marginTop: 20 }}>
         <Image
           source={require("../../assets/logout.png")}
           style={{ width: 50, height: 50 }}
@@ -97,14 +108,34 @@ const HomeScreen = () => {
       </TouchableOpacity>
     </View>
   );
+
+  return (
+    <DrawerLayoutAndroid
+      ref={(ref) => (drawerRef = ref)}
+      drawerWidth={250}
+      drawerPosition={"right"}
+      renderNavigationView={() => <MenuLateral />}
+    >
+      <View style={styles.container}>
+        <TouchableOpacity onPress={abrirMenuLateral} style={styles.header}>
+          <Image
+            source={require("../../assets/user.png")}
+            style={{ width: width * 0.18, height: height * 0.09 }}
+          />
+        </TouchableOpacity>
+      </View>
+    </DrawerLayoutAndroid>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#D0FFE8",
+  },
+  header: {
+    padding: 10,
   },
   avatar: {
     height: 100,
@@ -112,7 +143,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "500",
+    textAlign: "center",
   },
   containerText: {
     padding: 20,
@@ -123,7 +155,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   birdCard: {
-    width: 300,
+    width: 200,
     maxWidth: "100%",
     textAlign: "center",
   },

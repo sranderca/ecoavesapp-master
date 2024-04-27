@@ -63,7 +63,9 @@ const MenuQuestion = ({ route, navigation }) => {
       </View>
       <View styles={styles.containerButton}>
         <TouchableOpacity style={styles.button} onPress={() => handlePress()}>
-          <Text style={{ textAlign: "center", fontWeight: "bold",fontSize: 16 }}>
+          <Text
+            style={{ textAlign: "center", fontWeight: "bold", fontSize: 16 }}
+          >
             Comprobar conocimiento
           </Text>
         </TouchableOpacity>
@@ -94,9 +96,10 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "600",
     marginBottom: 70,
     marginTop: 10,
+    fontSize: 16,
   },
   text: {
     textAlign: "center",
