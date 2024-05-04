@@ -47,8 +47,18 @@ const DetalleAve = ({ route, navigation }) => {
       </View>
       <BlurView intensity={30} style={{ alignItems: "center" }}>
         <View style={{ width: width * 0.8, textAlign: "center" }}>
-          <Text style={{ marginTop: 10, marginBottom: -30, fontSize: 16 }}>
-            {ave.orden} &gt; {ave.familia}
+          <Text
+            style={{
+              marginTop: 10,
+              marginBottom: -30,
+              fontSize: 14,
+              color: "#1485F5",
+              fontWeight: "500",
+              textAlign: "center",
+            }}
+          >
+            Orden <Text style={{ color: "black" }}>{ave.orden}</Text> Familia{" "}
+            <Text style={{ color: "black" }}>{ave.familia}</Text>
           </Text>
           <Image
             source={{ uri: ave.imagen }}
@@ -59,8 +69,19 @@ const DetalleAve = ({ route, navigation }) => {
             }}
           />
           <View style={styles.birdInfo}>
-            <Text style={{ marginTop: -40, marginBottom: 10, fontSize: 16 }}>
-              Probabilidad de ver: {ave.prob_dever}
+            <Text style={{ marginTop: -40, marginBottom: 5, fontSize: 16 }}>
+              <Text style={{ color: "#1485F5", fontWeight: "600" }}>
+                Probabilidad de ver{" "}
+              </Text>
+              <Text>{ave.prob_dever}</Text>
+            </Text>
+            <Text style={{ marginBottom: 5, fontSize: 16 }}>
+              <Text style={{ color: "#1485F5", fontWeight: "600" }}>
+                Estado de conservacion{" "}
+              </Text>
+              <Text style={{ fontWeight: "400" }}>
+                {ave.estado_conservacion}
+              </Text>
             </Text>
             <Text style={styles.description}>{ave.descripcion}</Text>
           </View>
@@ -98,6 +119,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     textAlign: "justify",
+    fontWeight: '500'
   },
   nombreTitulo: {
     fontSize: 24,

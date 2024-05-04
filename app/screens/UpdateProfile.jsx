@@ -14,11 +14,16 @@ import { doc, setDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions } from "react-native";
 
 const UpdateProfile = () => {
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
   const [modalVisible, setModalVisible] = useState(false);
   const [username, setUsername] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState("https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird1.png?alt=media&token=5f11fb35-da49-44df-9d14-80fc557e9ffc");
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar1.jpeg?alt=media&token=5a364dda-9b03-4e21-a385-349a5971aaea"
+  );
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -60,18 +65,25 @@ const UpdateProfile = () => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
-
+  
       if (user !== null) {
         const uid = user.uid;
         const documentRef = doc(FIREBASE_STORE, "users", uid);
+        
+        // Verificar si el campo username está vacío
+        if (!username.trim()) {
+          Alert.alert("Por favor, ingrese un nombre de usuario.");
+          return; // Salir de la función si no hay un nombre de usuario
+        }
+  
         const data = {
           username: username,
           avatar: selectedAvatar,
           score: 0,
         };
-
+  
         await setDoc(documentRef, data);
-
+  
         Alert.alert("Datos de usuario actualizados con éxito.");
         navigation.navigate("Tab");
       } else {
@@ -81,6 +93,7 @@ const UpdateProfile = () => {
       Alert.alert("Error al actualizar los datos del usuario:", error);
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -96,12 +109,7 @@ const UpdateProfile = () => {
               setModalVisible(true);
             }}
           >
-            <Image
-              source={
-                { uri: selectedAvatar } 
-              }
-              style={styles.avatar}
-            />
+            <Image source={{ uri: selectedAvatar }} style={styles.avatar} />
           </TouchableOpacity>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <TextInput
@@ -129,82 +137,135 @@ const UpdateProfile = () => {
         }}
       >
         <View style={styles.containerModal}>
-          <View style={styles.modal}>
+          <View
+            style={{
+              backgroundColor: "#fff",
+              width: width * 0.9,
+              height: height * 0.28,
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
                 flexWrap: "wrap",
-                paddingVertical: 20,
-                width: "100%",
+                width: "93%",
+                height: "93%",
               }}
             >
               <TouchableOpacity
+                style={styles.card}
                 onPress={() =>
                   handleAvatarSelect(
-                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird1.png?alt=media&token=5f11fb35-da49-44df-9d14-80fc557e9ffc"
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar1.jpeg?alt=media&token=5a364dda-9b03-4e21-a385-349a5971aaea"
                   )
                 }
               >
                 <Image
                   source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird1.png?alt=media&token=5f11fb35-da49-44df-9d14-80fc557e9ffc",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar1.jpeg?alt=media&token=5a364dda-9b03-4e21-a385-349a5971aaea",
                   }}
-                  style={styles.avatarOption}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.card}
                 onPress={() =>
                   handleAvatarSelect(
-                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird2.png?alt=media&token=2740989d-3371-4b4a-a1ad-c3ac7c946c87"
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar2.jpeg?alt=media&token=87efab4c-c003-4925-ac6f-a705596a25d3"
                   )
                 }
               >
                 <Image
                   source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird2.png?alt=media&token=2740989d-3371-4b4a-a1ad-c3ac7c946c87",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar2.jpeg?alt=media&token=87efab4c-c003-4925-ac6f-a705596a25d3",
                   }}
-                  style={styles.avatarOption}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.card}
                 onPress={() =>
                   handleAvatarSelect(
-                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird3.png?alt=media&token=7c58433d-c841-4e69-8cb9-21550bf1bbb1"
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar3.jpeg?alt=media&token=c007ebf6-7b4d-4a4d-be15-188104c4e103"
                   )
                 }
               >
                 <Image
                   source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird3.png?alt=media&token=7c58433d-c841-4e69-8cb9-21550bf1bbb1",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar3.jpeg?alt=media&token=c007ebf6-7b4d-4a4d-be15-188104c4e103",
                   }}
-                  style={styles.avatarOption}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.card}
                 onPress={() =>
                   handleAvatarSelect(
-                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird4.png?alt=media&token=e8846bd1-ad8a-4d4a-8958-37b47054967e"
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar4.jpeg?alt=media&token=3757151e-33aa-4919-9172-d09a19f5cf57"
                   )
                 }
               >
                 <Image
                   source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird4.png?alt=media&token=e8846bd1-ad8a-4d4a-8958-37b47054967e",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar4.jpeg?alt=media&token=3757151e-33aa-4919-9172-d09a19f5cf57",
                   }}
-                  style={styles.avatarOption}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.card}
                 onPress={() =>
                   handleAvatarSelect(
-                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird5.png?alt=media&token=43a180ce-bdf5-4487-a50b-fe8425002802"
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar5.jpeg?alt=media&token=91949f1c-4fc2-4d6e-aadd-10e4ad4da764"
                   )
                 }
               >
                 <Image
                   source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/bird5.png?alt=media&token=43a180ce-bdf5-4487-a50b-fe8425002802",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar5.jpeg?alt=media&token=91949f1c-4fc2-4d6e-aadd-10e4ad4da764",
                   }}
-                  style={styles.avatarOption}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() =>
+                  handleAvatarSelect(
+                    "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar8.jpeg?alt=media&token=3ee93c72-e568-4e3c-af04-7826f4073935"
+                  )
+                }
+              >
+                <Image
+                  source={{
+                    uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar8.jpeg?alt=media&token=3ee93c72-e568-4e3c-af04-7826f4073935",
+                  }}
+                  style={{
+                    width: width * 0.26,
+                    height: height * 0.12,
+                    borderRadius: 20,
+                  }}
                 />
               </TouchableOpacity>
             </View>
@@ -265,22 +326,9 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     borderWidth: 1,
   },
-  avatarOption: {
-    width: 100,
-    height: 100,
-    borderRadius: 20,
-  },
   containerModal: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    backgroundColor: "#fff",
-    width: "77%",
-    height: "30%",
-    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -290,6 +338,9 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop: 30,
     alignItems: "center",
+  },
+  card: {
+    padding: 4,
   },
 });
 

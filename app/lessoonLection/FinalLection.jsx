@@ -5,7 +5,6 @@ import { Dimensions } from "react-native";
 
 const FinalLection = ({ route, navigation }) => {
   const { lection } = route.params;
-  const { width } = Dimensions.get("window");
   const { height } = Dimensions.get("window");
 
   const handlePress = () => {

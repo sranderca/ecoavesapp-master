@@ -132,12 +132,12 @@ const AvesScreen = ({ navigation }) => {
                 ]}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={abrirMenuLateral}>
+            {/*<TouchableOpacity onPress={abrirMenuLateral}>
               <Image
                 source={require("../../assets/filter.png")}
                 style={styles.button}
               />
-            </TouchableOpacity>
+              </TouchableOpacity> */}
           </View>
         </View>
         <View style={styles.infoContainer}>
