@@ -65,25 +65,25 @@ const UpdateProfile = () => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
-  
+
       if (user !== null) {
         const uid = user.uid;
         const documentRef = doc(FIREBASE_STORE, "users", uid);
-        
+
         // Verificar si el campo username está vacío
         if (!username.trim()) {
           Alert.alert("Por favor, ingrese un nombre de usuario.");
           return; // Salir de la función si no hay un nombre de usuario
         }
-  
+
         const data = {
           username: username,
           avatar: selectedAvatar,
           score: 0,
         };
-  
+
         await setDoc(documentRef, data);
-  
+
         Alert.alert("Datos de usuario actualizados con éxito.");
         navigation.navigate("Tab");
       } else {
@@ -93,7 +93,6 @@ const UpdateProfile = () => {
       Alert.alert("Error al actualizar los datos del usuario:", error);
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -141,7 +140,7 @@ const UpdateProfile = () => {
             style={{
               backgroundColor: "#fff",
               width: width * 0.9,
-              height: height * 0.28,
+              height: height * 0.33,
               borderRadius: 10,
               justifyContent: "center",
               alignItems: "center",
@@ -150,8 +149,8 @@ const UpdateProfile = () => {
             <View
               style={{
                 flexWrap: "wrap",
-                width: "93%",
-                height: "93%",
+                width: "88%",
+                height: "80%",
               }}
             >
               <TouchableOpacity
@@ -167,7 +166,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar1.jpeg?alt=media&token=5a364dda-9b03-4e21-a385-349a5971aaea",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}
@@ -186,7 +185,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar2.jpeg?alt=media&token=87efab4c-c003-4925-ac6f-a705596a25d3",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}
@@ -205,7 +204,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar3.jpeg?alt=media&token=c007ebf6-7b4d-4a4d-be15-188104c4e103",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}
@@ -224,7 +223,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar4.jpeg?alt=media&token=3757151e-33aa-4919-9172-d09a19f5cf57",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}
@@ -243,7 +242,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar5.jpeg?alt=media&token=91949f1c-4fc2-4d6e-aadd-10e4ad4da764",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}
@@ -262,7 +261,7 @@ const UpdateProfile = () => {
                     uri: "https://firebasestorage.googleapis.com/v0/b/login-ecoaves.appspot.com/o/avatar8.jpeg?alt=media&token=3ee93c72-e568-4e3c-af04-7826f4073935",
                   }}
                   style={{
-                    width: width * 0.26,
+                    width: width * 0.24,
                     height: height * 0.12,
                     borderRadius: 20,
                   }}

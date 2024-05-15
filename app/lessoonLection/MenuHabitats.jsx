@@ -1,6 +1,5 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 
 const MenuHabitats = ({ navigation }) => {
@@ -81,7 +80,6 @@ const MenuHabitats = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
     flexGrow: 1,
     backgroundColor: "#D0FFE8",
   },
@@ -106,10 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 20,
   },
-  text: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
   containerIcon: {
     width: 60,
     height: 60,
@@ -130,6 +124,10 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 100,
     backgroundColor: "white",
+  },
+  text: {
+    textAlign: "center",
+    fontWeight: "bold",
   },
   containerButton: {
     flex: 1,

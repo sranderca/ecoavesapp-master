@@ -5,10 +5,9 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  FlatList,
+  ScrollView,
 } from "react-native";
 import obtenerLecciones from "../data/obtenerLecciones";
-import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 
 const Aprender = ({ navigation }) => {
@@ -65,7 +64,7 @@ const Aprender = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>
           Actitudes para la conservación de las aves
@@ -99,8 +98,8 @@ const Aprender = ({ navigation }) => {
       >
         <Text
           style={{
-            marginTop: 85,
-            marginLeft: 13,
+            marginTop: 70,
+            marginLeft: 14,
             color: "white",
             fontWeight: "bold",
             fontSize: 16,
@@ -117,19 +116,15 @@ const Aprender = ({ navigation }) => {
         </View>
       </TouchableOpacity>
       <Text style={styles.tituloLecciones}>Todas las lecciones</Text>
-      <FlatList
-        data={lection}
-        renderItem={({ item }) => <LectionCard lection={item} />}
-        keyExtractor={(lection) => lection.id}
-      />
-    </View>
+      {lection.map((item) => (
+        <LectionCard key={item.id} lection={item} />
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
     flexGrow: 1,
     backgroundColor: "#D0FFE8",
     alignItems: "center",
@@ -158,7 +153,7 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 16,
     fontWeight: "400",
-    textAlign: "justify",
+    textAlign: "center",
     paddingHorizontal: 30,
   },
   tituloLecciones: {
@@ -176,8 +171,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textoLeccion: {
-    marginTop: 85,
-    marginLeft: 13,
+    marginTop: 70,
+    marginLeft: 14,
     color: "white",
     fontWeight: "bold",
     fontSize: 16,

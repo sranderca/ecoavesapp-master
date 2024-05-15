@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Constants from "expo-constants";
 import { collection, getDocs } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
 
@@ -17,6 +16,8 @@ const Lection = ({ route, navigation }) => {
   const idLection = lection.id;
   const [activeIndex, setActiveIndex] = useState(0);
   const [sectionLections, setSectionLections] = useState([]);
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#333333",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: Constants.statusBarHeight,
   },
   birdCard: {
     backgroundColor: "#fff",
@@ -114,9 +114,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    marginTop: -10
   },
   description: {
-    lineHeight: 20,
+    lineHeight: 17,
+    textAlign: 'justify'
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 260,
+    height: 50,
+    backgroundColor: "#66FFA6",
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
   paginationContainer: {
     paddingTop: 90,
@@ -135,19 +150,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: 8,
     backgroundColor: "#ccc",
-  },
-  buttonText: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 260,
-    height: 50,
-    backgroundColor: "#66FFA6",
-    borderRadius: 8,
-    marginTop: 20,
   },
 });
 

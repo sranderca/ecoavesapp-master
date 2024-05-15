@@ -10,7 +10,6 @@ import {
   DrawerLayoutAndroid,
 } from "react-native";
 import obtenerAves from "../data/obtenerAves";
-import Constants from "expo-constants";
 
 const AvesScreen = ({ navigation }) => {
   const [aves, setAves] = useState([]);
@@ -159,7 +158,6 @@ const AvesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
     flexGrow: 1,
   },
   card: {
@@ -232,7 +230,7 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 14,
     color: "#333333",
-    padding: 1,
+    padding: 2,
   },
 });
 

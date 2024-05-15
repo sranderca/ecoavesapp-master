@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
-import Constants from "expo-constants";
 import * as Progress from "react-native-progress";
 import { Dimensions } from "react-native";
 
@@ -63,18 +62,9 @@ const Questions = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Progress.Bar progress={progress} width={null} height={20}></Progress.Bar>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "600",
-          textAlign: "center",
-          marginBottom: 10,
-        }}
-      >
-        Pregunta: {currentQuestionsIndex + 1}
-      </Text>
+      <Text style={styles.title}>Pregunta: {currentQuestionsIndex + 1}</Text>
       {cuestionarios.length > 0 ? (
         <>
           <View style={styles.containerQues}>
@@ -86,7 +76,7 @@ const Questions = ({ route, navigation }) => {
             Seleccione una respuesta
           </Text>
           {cuestionarios[currentQuestionsIndex].opciones.map((opcion) => (
-            <View>
+            <View key={opcion}>
               <Pressable
                 onPress={() => handleOptionPress(opcion)}
                 style={[
@@ -144,16 +134,21 @@ const Questions = ({ route, navigation }) => {
       ) : (
         <Text>Cargando cuestionarios...</Text>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
-    marginTop: Constants.statusBarHeight,
     backgroundColor: "#D0FFE8",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 10,
   },
   containerQues: {
     backgroundColor: "white",

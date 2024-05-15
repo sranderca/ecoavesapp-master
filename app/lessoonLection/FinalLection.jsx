@@ -1,6 +1,5 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 
 const FinalLection = ({ route, navigation }) => {
@@ -19,7 +18,6 @@ const FinalLection = ({ route, navigation }) => {
         style={{
           height: height * 0.35,
           width: "100%",
-          marginTop: Constants.statusBarHeight,
         }}
       />
       <View style={styles.icon}>

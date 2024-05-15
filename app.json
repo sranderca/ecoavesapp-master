@@ -4,7 +4,7 @@
     "slug": "EcoAves",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/EcoAvesLogo1.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/EcoAves.png",
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/EcoAvesLogo1.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sranderca.EcoAves"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ac595a05-e76f-4b18-9d96-f8c03d453c47"
+      }
     }
   }
 }

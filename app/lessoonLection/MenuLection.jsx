@@ -1,6 +1,5 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 
 const MenuLection = ({ route, navigation }) => {
@@ -77,7 +76,6 @@ const MenuLection = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
     flexGrow: 1,
   },
   containerImage: {

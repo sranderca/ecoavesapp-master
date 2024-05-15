@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import Constants from "expo-constants";
 import { useRoute } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -62,17 +61,10 @@ const Score = ({ navigation }) => {
           source={require("../../assets/finalquestion.png")}
           style={styles.image}
         />
-        <Text
-          style={{
-            fontSize: 20,
-            textAlign: "center",
-            marginBottom: 20,
-            fontWeight: "600",
-          }}
-        >
+        <Text style={styles.title}>
           Felicidades, has completado el cuestionario!
         </Text>
-        <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 30 }}>
+        <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 20 }}>
           Obtuviste un puntaje de:
         </Text>
         <Text style={{ fontSize: 60, fontWeight: "600" }}>{score}</Text>
@@ -87,17 +79,22 @@ const Score = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
     backgroundColor: "#D0FFE8",
+  },
+  containerContent: {
+    alignItems: "center",
+    padding: 20,
   },
   image: {
     width: 300,
     height: 300,
     marginTop: 100,
   },
-  containerContent: {
-    alignItems: "center",
-    padding: 20,
+  title: {
+    fontSize: 20,
+    textAlign: "center",
+    marginBottom: 20,
+    fontWeight: "600",
   },
   Boton: {
     backgroundColor: "#1485F5",
@@ -106,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 60,
+    marginTop: 40,
   },
 });
 

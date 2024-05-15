@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   DrawerLayoutAndroid,
   Linking,
+  ScrollView,
+  TouchableHighlight,
+  Modal,
 } from "react-native";
-
-import Constants from "expo-constants";
 import { doc, getDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
@@ -85,6 +86,8 @@ const HomeScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { width } = Dimensions.get("window");
   const { height } = Dimensions.get("window");
+  const [isImageModalVisible, setImageModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const drawer = useRef(null);
   let uid = null;
   let email = null;
@@ -111,12 +114,25 @@ const HomeScreen = () => {
       <Text style={styles.content}>{item.content}</Text>
     </View>
   );
+
+  const handleImagePress = (imageUri) => {
+    setSelectedImage(imageUri);
+    setImageModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setImageModalVisible(false);
+  };
+
   const renderImagen = ({ item }) => (
     <View style={styles.noticiaContainer}>
-      <Image
-        source={{ uri: item.content }}
-        style={{ width: width * 0.8, height: height * 0.24 }}
-      />
+      <TouchableOpacity onPress={() => handleImagePress(item.content)}>
+        <Image
+          source={{ uri: item.content }}
+          style={{ width: width * 0.8, height: height * 0.24 }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </View>
   );
 
@@ -216,7 +232,7 @@ const HomeScreen = () => {
       drawerPosition={"right"}
       renderNavigationView={navigationView}
     >
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TouchableOpacity
           onPress={() => drawer.current.openDrawer()}
           style={styles.header}
@@ -231,7 +247,7 @@ const HomeScreen = () => {
             EcoAves: Un prototipo de aplicacion movil para la conservacion de
             las aves de la Laguna de Sonso
           </Text>
-          <Text style={{ textAlign: 'center', marginTop: 5, fontWeight: '00' }}>
+          <Text style={{ textAlign: "center", marginTop: 5, fontSize: 15 }}>
             ¡Bienvenido a EcoAves! Una aplicación móvil diseñada para la
             conservación y protección de las aves que habitan en la hermosa
             Laguna de Sonso, ubicada en el Valle del Cauca, Colombia. Con
@@ -283,8 +299,30 @@ const HomeScreen = () => {
             autoplayInterval={5000} // Intervalo de cambio de noticia (en milisegundos)
             loop={true} // Hacer que el carrusel vuelva a la primera noticia al finalizar
           />
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={isImageModalVisible}
+            onRequestClose={closeModal}
+          >
+            <View style={styles.modalContainer}>
+              <Image
+                source={{ uri: selectedImage }}
+                style={{ width: "100%", height: "100%", resizeMode: "contain" }}
+              />
+              <TouchableHighlight
+                onPress={closeModal}
+                style={styles.closeButton}
+              >
+                <Image
+                source={require('../../assets/cruz.png')}
+                style={{ width: 25, height: 25 }}
+                />
+              </TouchableHighlight>
+            </View>
+          </Modal>
         </View>
-      </View>
+      </ScrollView>
     </DrawerLayoutAndroid>
   );
 };
@@ -292,7 +330,6 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
     backgroundColor: "#D0FFE8",
   },
   containerDrawer: {
@@ -321,44 +358,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     textAlign: "center",
   },
-  containerText: {
-    padding: 20,
-  },
-  textTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  birdCard: {
-    width: 200,
-    maxWidth: "100%",
-    textAlign: "center",
-  },
-  birdImage: {
-    width: 300,
-    height: 250,
-    resizeMode: "cover",
-  },
-  birdInfo: {
-    padding: 20,
-  },
-  birdName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  scientificName: {
-    color: "#666",
-    marginBottom: 10,
-  },
-  description: {
-    lineHeight: 20,
-  },
-  logoutButton: {
-    position: "absolute",
-    top: Constants.statusBarHeight + 10,
-    right: 40,
-  },
   link: {
     color: "blue",
     textDecorationLine: "underline",
@@ -374,13 +373,30 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   content: {
-    fontSize: 12,
+    fontSize: 14,
     textAlign: "justify",
   },
   containerNews: {
     marginTop: 20,
     backgroundColor: "#1485F5",
     paddingVertical: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    fontSize: 16,
   },
 });
 
