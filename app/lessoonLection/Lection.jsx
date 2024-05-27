@@ -16,8 +16,6 @@ const Lection = ({ route, navigation }) => {
   const idLection = lection.id;
   const [activeIndex, setActiveIndex] = useState(0);
   const [sectionLections, setSectionLections] = useState([]);
-  const { width } = Dimensions.get("window");
-  const { height } = Dimensions.get("window");
 
   useEffect(() => {
     const fetchData = async () => {

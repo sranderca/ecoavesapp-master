@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_STORE } from "../../firebaseConfig";
+import LottieView from "lottie-react-native";
 
 const Score = ({ navigation }) => {
   const route = useRoute();
-  const { score } = route.params;
+  const { score, lection, cuestionarios } = route.params;
   const [userScore, setUserScore] = useState(null);
   const auth = getAuth();
   const user = auth.currentUser;
+  const idLection = lection.id;
+  const lengthQuiz = cuestionarios.length;
+  const maxScore = lengthQuiz * 10;
+  const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
     const fetchUserScore = async () => {
@@ -34,21 +39,27 @@ const Score = ({ navigation }) => {
   }, [user]);
 
   useEffect(() => {
-    const updateUserScore = async () => {
+    const updateUserScoreAndLogro = async () => {
       if (userScore !== null && user) {
         const newScore = userScore + score;
+        const logroCompletado = score === maxScore;
         try {
           const userDocRef = doc(FIREBASE_STORE, "users", user.uid);
           await updateDoc(userDocRef, {
             score: newScore,
+            [`logros.${idLection}`]: logroCompletado,
           });
+          if (logroCompletado) {
+            setShowAnimation(true);
+            Alert.alert('Felicidades! Conseguiste un nuevo logro')
+          }
         } catch (error) {
           console.error("Error al actualizar el puntaje del usuario:", error);
         }
       }
     };
-    updateUserScore();
-  }, [userScore, score, user]);
+    updateUserScoreAndLogro();
+  }, [userScore, score, user, lection, maxScore]);
 
   const handleFinishQuestion = () => {
     navigation.navigate("Tab");
@@ -68,6 +79,15 @@ const Score = ({ navigation }) => {
           Obtuviste un puntaje de:
         </Text>
         <Text style={{ fontSize: 60, fontWeight: "600" }}>{score}</Text>
+        {showAnimation && (
+          <LottieView
+            source={require("../../assets/Animation - 1716529229410.json")}
+            autoPlay
+            loop={false}
+            style={styles.animation}
+            onAnimationFinish={() => setShowAnimation(false)}
+          />
+        )}
         <Pressable style={styles.Boton} onPress={handleFinishQuestion}>
           <Text style={{ fontSize: 18, color: "white" }}>Finalizar</Text>
         </Pressable>
@@ -104,6 +124,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+  },
+  animation: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
   },
 });
 

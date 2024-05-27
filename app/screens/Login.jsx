@@ -81,7 +81,7 @@ const Login = () => {
             />
             <View>
               <Text style={{ fontSize: 17, fontWeight: "400", color: "black" }}>
-                E-mail
+                Correo Electronico
               </Text>
               <TextInput
                 value={email}
@@ -93,7 +93,7 @@ const Login = () => {
             </View>
             <View>
               <Text style={{ fontSize: 17, fontWeight: "400", color: "black" }}>
-                Password
+                Contraseña
               </Text>
               <TextInput
                 secureTextEntry={true}
@@ -115,7 +115,7 @@ const Login = () => {
                   <Text
                     style={{ fontSize: 17, fontWeight: "400", color: "white" }}
                   >
-                    Login
+                    Iniciar Sesion
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -125,7 +125,7 @@ const Login = () => {
                   <Text
                     style={{ fontSize: 17, fontWeight: "400", color: "white" }}
                   >
-                    Create Account
+                    Crear Cuenta
                   </Text>
                 </TouchableOpacity>
               </>

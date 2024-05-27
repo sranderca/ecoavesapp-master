@@ -23,7 +23,6 @@ const Aprender = ({ navigation }) => {
           id: doc.id,
           ...doc.data(),
         }));
-
         setLection(lectionData);
       } catch (error) {
         console.error("Error al obtener lecciones:", error);

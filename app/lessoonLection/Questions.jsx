@@ -38,7 +38,7 @@ const Questions = ({ route, navigation }) => {
 
   const handleNext = () => {
     if (currentQuestionsIndex === cuestionarios.length - 1) {
-      navigation.navigate("Score", { score: score });
+      navigation.navigate("Score", { score: score, lection: lection, cuestionarios: cuestionarios  });
     } else {
       setCurrentQuestionIndex(currentQuestionsIndex + 1);
       setSelectedOption(null);

@@ -35,6 +35,7 @@ const MenuQuestion = ({ route, navigation }) => {
             marginTop: height * 0.25,
             height: 120,
             width: 120,
+            borderRadius: 20
           }}
         />
       </View>

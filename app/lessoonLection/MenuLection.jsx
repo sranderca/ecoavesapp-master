@@ -37,6 +37,7 @@ const MenuLection = ({ route, navigation }) => {
             marginTop: height * 0.25,
             height: 120,
             width: 120,
+            borderRadius: 20
           }}
         />
       </View>
@@ -96,7 +97,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "600",
-    marginBottom: 30,
+    marginBottom: 30, 
+    textAlign: 'center'
   },
   description: {
     textAlign: "center",

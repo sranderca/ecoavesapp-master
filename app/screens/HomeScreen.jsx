@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Image,
   Text,
   StyleSheet,
   TouchableOpacity,
-  DrawerLayoutAndroid,
   Linking,
   ScrollView,
   TouchableHighlight,
@@ -17,6 +16,8 @@ import { getAuth, signOut } from "firebase/auth";
 import { useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { Drawer } from "react-native-drawer-layout";
+import Logros from "../lessoonLection/Logros";
 
 const noticias = [
   {
@@ -87,8 +88,9 @@ const HomeScreen = () => {
   const { width } = Dimensions.get("window");
   const { height } = Dimensions.get("window");
   const [isImageModalVisible, setImageModalVisible] = useState(false);
+  const [isLogrosModalVisible, setLogrosModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const drawer = useRef(null);
+  const [open, setOpen] = React.useState(false);
   let uid = null;
   let email = null;
 
@@ -176,7 +178,7 @@ const HomeScreen = () => {
     <View style={[styles.containerDrawer, styles.navigationContainer]}>
       <TouchableOpacity
         style={{ marginRight: 240 }}
-        onPress={() => drawer.current.closeDrawer()}
+        onPress={() => setOpen(false)}
       >
         <Image
           source={require("../../assets/cruz.png")}
@@ -190,6 +192,18 @@ const HomeScreen = () => {
       <Text style={styles.text}>{email}</Text>
       <Text style={styles.text}>{users.username}</Text>
       <Text style={styles.text}>Score: {users.score}</Text>
+
+      <TouchableOpacity
+        style={{ bottom: -30, alignItems: "center" }}
+        onPress={() => setLogrosModalVisible(true)}
+      >
+        <Text style={styles.text}>Logros</Text>
+        <Image
+          source={require("../../assets/insig.png")}
+          style={{ width: 30, height: 30 }}
+        />
+      </TouchableOpacity>
+
       <Text
         style={{
           bottom: 200,
@@ -226,15 +240,16 @@ const HomeScreen = () => {
   );
 
   return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition={"right"}
-      renderNavigationView={navigationView}
+    <Drawer
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      renderDrawerContent={navigationView}
+      drawerPosition="right"
     >
       <ScrollView style={styles.container}>
         <TouchableOpacity
-          onPress={() => drawer.current.openDrawer()}
+          onPress={() => setOpen((prevOpen) => !prevOpen)}
           style={styles.header}
         >
           <Image
@@ -315,15 +330,46 @@ const HomeScreen = () => {
                 style={styles.closeButton}
               >
                 <Image
-                source={require('../../assets/cruz.png')}
-                style={{ width: 25, height: 25 }}
+                  source={require("../../assets/cruz.png")}
+                  style={{ width: 25, height: 25 }}
                 />
               </TouchableHighlight>
             </View>
           </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={isLogrosModalVisible}
+            onRequestClose={() => setLogrosModalVisible(false)}
+          >
+            <View style={styles.containerModal}>
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  width: width * 0.9,
+                  height: height * 0.6,
+                  borderRadius: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ bottom: 50, fontSize: 18, fontWeight: 600 }}>Logros</Text>
+                <Logros user={user} />
+                <TouchableHighlight
+                  onPress={() => setLogrosModalVisible(false)}
+                  style={styles.closeButton}
+                >
+                  <Image
+                    source={require("../../assets/cruz.png")}
+                    style={{ width: 25, height: 25 }}
+                  />
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
         </View>
       </ScrollView>
-    </DrawerLayoutAndroid>
+    </Drawer>
   );
 };
 
@@ -387,6 +433,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
   },
+  containerModal: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   closeButton: {
     position: "absolute",
     top: 20,
@@ -394,9 +446,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderRadius: 5,
-  },
-  closeButtonText: {
-    fontSize: 16,
   },
 });
 

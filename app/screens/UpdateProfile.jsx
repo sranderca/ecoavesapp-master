@@ -39,7 +39,14 @@ const UpdateProfile = () => {
             username: "",
             avatar: "",
             score: 0,
-            profileComplete: true,
+            logros: {
+              "LECTION1" : false,
+              "LECTION2" : false,
+              "LECTION3" : false,
+              "LECTION4" : false,
+              "LECTION5" : false,
+              "LECTION6" : false,
+            }
           };
 
           await setDoc(documentRef, data);
@@ -80,6 +87,14 @@ const UpdateProfile = () => {
           username: username,
           avatar: selectedAvatar,
           score: 0,
+          logros: {
+            "LECTION1" : false,
+            "LECTION2" : false,
+            "LECTION3" : false,
+            "LECTION4" : false,
+            "LECTION5" : false,
+            "LECTION6" : false,
+          }
         };
 
         await setDoc(documentRef, data);
