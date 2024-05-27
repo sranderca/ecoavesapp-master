@@ -12,4 +12,6 @@ y luego desde la carpeta del proyecto
 
 yarn install
 
+link del apk de la aplicación: https://drive.google.com/file/d/1G8kkqGeoBSKyOE65bAJ69w6JUlIjzx7Z/view?usp=sharing
+
 "# EcoAvesApp" 
