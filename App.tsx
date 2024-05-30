@@ -20,6 +20,7 @@ import Score from "./app/lessoonLection/Score";
 import MenuHabitats from "./app/lessoonLection/MenuHabitats";
 import Habitats from "./app/lessoonLection/Habitats";
 import 'react-native-gesture-handler'
+import Score2 from "./app/lessoonLection/Score2";
 
 const Stack = createNativeStackNavigator();
 
@@ -145,6 +146,11 @@ export default function App() {
         <Stack.Screen
           name="Habitats"
           component={Habitats}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Score2"
+          component={Score2}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

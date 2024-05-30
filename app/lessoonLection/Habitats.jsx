@@ -121,7 +121,7 @@ const Habitats = ({ navigation }) => {
   };
 
   const handleFinish = () => {
-    navigation.navigate("Score", { score: score });
+    navigation.navigate("Score2", { score: score });
   };
 
   return (
