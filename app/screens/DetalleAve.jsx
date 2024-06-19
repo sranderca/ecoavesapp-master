@@ -21,69 +21,45 @@ const DetalleAve = ({ route, navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity
-        style={{ left: 15, marginTop: 10 }}
-        onPress={() => handleBack()}
-      >
-        <Image
-          source={require("../../assets/back.png")}
-          style={{ width: 35, height: 35 }}
-        />
-      </TouchableOpacity>
-      <View style={styles.head}>
-        <Text style={styles.nombreTitulo}>{ave.nombre}</Text>
-        <Text style={styles.nombreSub}>({ave.nom_cientifico})</Text>
-        <View
-          style={{
-            width: width,
-            height: 30,
-            backgroundColor: "#D9D9D9",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={{ marginBottom: -20 }}
+          onPress={() => handleBack()}
         >
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>
-            INFORMACION DE LA ESPECIE
-          </Text>
-        </View>
-      </View>
-      <BlurView intensity={30} style={{ alignItems: "center" }}>
-        <View style={{ width: width * 0.8, textAlign: "center" }}>
           <Image
-            source={{ uri: ave.imagen }}
-            style={{
-              width: width * 0.8,
-              height: height * 0.4,
-              resizeMode: "contain",
-            }}
+            source={require("../../assets/back.png")}
+            style={{ width: 35, height: 30 }}
           />
-          <View style={styles.birdInfo}>
-            <Text style={{ marginTop: -30, marginBottom: 5, fontSize: 16 }}>
-              <Text style={styles.subtitle}>Orden </Text>
-              <Text>{ave.orden}</Text>
-            </Text>
-            <Text style={styles.title}>
-              <Text style={styles.subtitle}>Familia </Text>
-              <Text>{ave.familia}</Text>
-            </Text>
-            <Text style={styles.title}>
-              <Text style={styles.subtitle}>Probabilidad de ver </Text>
-              <Text>{ave.prob_dever}</Text>
-            </Text>
-            <Text style={styles.title}>
-              <Text style={styles.subtitle}>Donde la puedo encontrar? </Text>
-              <Text>{ave.dondela_encuentro}</Text>
-            </Text>
-            <Text style={styles.title}>
-              <Text style={styles.subtitle}>Estado de conservacion </Text>
-              <Text style={{ fontWeight: "400" }}>
-                {ave.estado_conservacion}
-              </Text>
-            </Text>
-            <Text style={styles.description}>{ave.descripcion}</Text>
-          </View>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.nombreTitulo}>{ave.nombre}</Text>
+      <Text style={styles.nombreSub}>({ave.nom_cientifico})</Text>
+      <View style={styles.infoEspecie}>
+        <Text style={{ fontSize: 18, fontWeight: "600" }}>
+          INFORMACION DE LA ESPECIE
+        </Text>
+      </View>
+        <Image
+          source={{ uri: ave.imagen }}
+          style={{
+            width: "100%",
+            height: 300,
+            marginTop: 30
+          }}
+        />
+        <View style={styles.containerInfo}>
+          <Text style={styles.text}>{ave.descripcion}</Text>
+          <Text style={styles.orden}>Orden</Text>
+          <Text style={styles.text}>{ave.orden}</Text>
+          <Text style={styles.orden}>Familia</Text>
+          <Text style={styles.text}>{ave.familia}</Text>
+          <Text style={styles.orden}>Probabilidad de ver</Text>
+          <Text style={styles.text}>{ave.prob_dever}</Text>
+          <Text style={styles.orden}>Donde la puedo encontrar</Text>
+          <Text style={styles.text}>{ave.dondela_encuentro}</Text>
+          <Text style={styles.orden}>Estado de conservacion</Text>
+          <Text style={styles.text}>{ave.estado_conservacion}</Text>
         </View>
-      </BlurView>
     </ScrollView>
   );
 };
@@ -92,11 +68,12 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: "#D0FFE8",
+    marginTop: 30,
   },
-  head: {
+  header: {
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: -30,
-    paddingHorizontal: 50,
+    padding: 12,
   },
   nombreTitulo: {
     fontSize: 24,
@@ -108,23 +85,32 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
     marginBottom: 20,
+    textAlign: "center",
   },
-  birdInfo: {
-    paddingHorizontal: 10,
+  infoEspecie: {
+    width: "100%",
+    height: 30,
+    backgroundColor: "#D9D9D9",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  title: { 
-    marginBottom: 5, 
-    fontSize: 16 
+  containerInfo: {
+    flex: 1,
+    padding: 16
   },
-  subtitle: {
-    color: "#1485F5",
-    fontWeight: "600",
+  text: {
+    fontSize: 16,
+    marginBottom: 10
   },
   description: {
     fontSize: 16,
     textAlign: "justify",
     fontWeight: "400",
   },
+  orden: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  }
 });
 
 export default DetalleAve;

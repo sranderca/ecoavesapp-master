@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexGrow: 1,
+    marginTop: 30
   },
   card: {
     flexDirection: "row",
